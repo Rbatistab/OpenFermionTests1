@@ -1,6 +1,8 @@
 # This is very basic configuration for H2 in OpenFermion for it's use in
 # posterior documents
 
+# A. Molecule specification and input generation:
+
 from openfermion.hamiltonians import MolecularData
 
 geometry = [['H',[0,0,0]],['H',[0,0,0.74]]]

@@ -1,5 +1,6 @@
+# A. Molecule specification and input generation:
+
 from openfermion.hamiltonians import MolecularData
-from openfermionpyscf import run_pyscf
 
 geometry = [['H', [0,0,0] ],
             ['H', [0,0,0.74] ]]
@@ -8,6 +9,11 @@ basis = 'sto-3g'
 multiplicity = 1
 charge = 0
 h2_molecule = MolecularData(geometry, basis, multiplicity, charge)
+
+
+# B. Integral generation:
+
+from openfermionpyscf import run_pyscf
 
 h2_molecule = run_pyscf( h2_molecule,
                         run_mp2=True,
@@ -18,14 +24,14 @@ h2_molecule = run_pyscf( h2_molecule,
 h2_filename = h2_molecule.filename
 h2_molecule.save()
 
-h2_molecule2 = MolecularData(filename=h2_filename)
+# C. Mapping to qubits: 
 
-one_body_integrals = h2_molecule.one_body_integrals
-print("One body integral: \n")
-print(one_body_integrals)
+from openfermion.transforms import get_fermion_operator, jordan_wigner
 
-two_body_integrals = h2_molecule.two_body_integrals
-print("Two body integral: \n")
-print(two_body_integrals)
+h2_qubit_hamiltonian = jordan_wigner(get_fermion_operator(h2_molecule.get_molecular_hamiltonian() ) )
 
+print(h2_qubit_hamiltonian)
 
+# D. Numerical testing:
+
+from 

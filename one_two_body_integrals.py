@@ -18,8 +18,13 @@ h2_molecule = run_psi4( h2_molecule,
 two_electron_integrals = h2_molecule.two_body_integrals
 one_electron_integrals = h2_molecule.one_body_integrals
 
-print("Two electron integrals:")
+print("Two electron integrals:\n")
 print(two_electron_integrals)
-print("One electron integrals")
+print("One electron integrals:\n")
 print(one_electron_integrals)
+
+orbitals = h2_molecule.canonical_orbitals
+
+print("Orbital coefficients:\n")
+print(orbitals)
 

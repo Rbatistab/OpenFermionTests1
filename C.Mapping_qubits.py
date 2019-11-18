@@ -32,6 +32,4 @@ h2_qubit_hamiltonian = jordan_wigner(get_fermion_operator(h2_molecule.get_molecu
 
 print(h2_qubit_hamiltonian)
 
-# D. Numerical testing:
 
-from 

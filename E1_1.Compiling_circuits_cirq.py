@@ -24,12 +24,6 @@ h2_molecule = run_pyscf( h2_molecule,
 h2_filename = h2_molecule.filename
 h2_molecule.save()
 
-# C. Mapping to qubits: 
-
-from openfermion.transforms import get_fermion_operator, jordan_wigner
-
-h2_qubit_hamiltonian = jordan_wigner(get_fermion_operator(h2_molecule.get_molecular_hamiltonian() ) )
-
 
 # E. Compiling circuits for quantum algorithms, cirq:
 

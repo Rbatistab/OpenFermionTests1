@@ -1,2 +1,0 @@
-from openfermion.ops import QubitOperator
-from forestopenfermion import pyquilpauli_to_qubitop, qubitop_to_pyquilpauli

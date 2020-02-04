@@ -26,9 +26,11 @@ h2_molecule.save()
 
 # C. Mapping to qubits: 
 
-from openfermion.transforms import get_fermion_operator, jordan_wigner
+from openfermion.transforms import get_fermion_operator, jordan_wigner, bravyi_kitaev
 
 h2_qubit_hamiltonian = jordan_wigner(get_fermion_operator(h2_molecule.get_molecular_hamiltonian() ) )
+h2_qubit_hamiltonian = bravyi_kitaev(get_fermion_operator(h2_molecule.get_molecular_hamiltonian() ) )
+
 
 print(h2_qubit_hamiltonian)
 

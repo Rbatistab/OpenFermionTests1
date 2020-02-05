@@ -1,4 +1,5 @@
-# Molecule specification 
+# Molecule specification for Hydrogen molecule
+
 from openfermion.hamiltonians import MolecularData
 
 geometry = [['H', [0, 0, 0]],
@@ -9,7 +10,7 @@ multiplicity = 1
 charge = 0
 
 h2_molecule = MolecularData(geometry, basis, multiplicity, charge)
-print(h2_molecule.get_molecular_hamiltonian())
+
 print("Current simulation state:\n")
 print("Geometry: H [0, 0, 0] - H[0, 0, 0.74]")
 print("Basis: Slater-type orbitals, with three gaussians")
@@ -18,7 +19,8 @@ print("Charge = 0")
 
 # Second quantization in creation/anhilation operators
 
-print("\nThe molecular Hamiltonian in the second quantization is: H_1 + H_2")
+print("\nThe molecular Hamiltonian in the second quantization is: H_1 + H_2\n")
+print("H = H_1 + H_2 = \u03A3 (h_ij(R)a\u2020_ia_j) + \u03A3 (h_ijkl(R)a\u2020_ia\u2020_ja_k_al)")
 
 integrals = h2_molecule.get_integrals()
 
@@ -55,9 +57,30 @@ for i in range(2):
 
 print(h2)
 
+print("\nThe latter second quantization has the integral coeficients for the electron integrals in the molecular orbital basis")
+
+# Optional, it may be done with a psi4 over the h2 molecule
+
+from openfermionpsi4 import run_psi4
+
+h2_molecule_psi4 = run_psi4(h2_molecule,
+                            run_mp2 = True,
+                            run_cisd = True,
+                            run_ccsd = True,
+                            run_fci = True)
+
+
+
 # Mapping to qubits by Bravyi-Kitaev
+
+
 from openfermion.transforms import get_fermion_operator, bravyi_kitaev
 
 h2_qubit_hamiltonian = bravyi_kitaev(get_fermion_operator(h2_molecule.get_molecular_hamiltonian() ))
 
+#h2_qubit_hamiltonian = bravyi_kitaev(get_fermion_operator(h2_molecule_psi4.get_molecular_hamiltonian() ))
+
+print("\nThe latter Hamiltoian mapped to a qubit Hamiltonian in through the Bravyi-kitaev transformation is:\n ")
 print(h2_qubit_hamiltonian)
+
+

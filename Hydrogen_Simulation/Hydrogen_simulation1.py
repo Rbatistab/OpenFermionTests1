@@ -58,8 +58,26 @@ for i in range(2):
 print(h2)
 
 print("\nThe latter second quantization has the integral coeficients for the electron integrals in the molecular orbital basis")
+print("\n**The molecular hamiltonian's interaction constant, has been manually set to 0 in order to do the following mapping")
+
+# The molecular hamiltonian computed by openfermion sets the interaction constant as "None" type by default when the occupied_indices and active_indices (get_molecular_hamiltonian() arguments) are not specified, which is why is manually set to 0
+# If this constant is "none" type instead of "numeric", the next transformation raises an exception
+H2_molecular_hamiltonian = h2_molecule.get_molecular_hamiltonian()
+H2_molecular_hamiltonian.constant = 0
+
+from openfermion.transforms import get_fermion_operator, bravyi_kitaev
+
+h2_qubit_hamiltonian = bravyi_kitaev(get_fermion_operator(H2_molecular_hamiltonian))
+
+print("\nThe latter Hamiltoian mapped to a qubit Hamiltonian in through the Bravyi-kitaev transformation is:\n ")
+print(h2_qubit_hamiltonian)
+
 
 # Optional, it may be done with a psi4 over the h2 molecule
+
+#Let's reset the original H2_molecular_hamiltonian to it's original form and run psi_4:
+#H2_molecular_hamiltonian.constant = None
+
 
 from openfermionpsi4 import run_psi4
 
@@ -70,15 +88,10 @@ h2_molecule_psi4 = run_psi4(h2_molecule,
                             run_fci = True)
 
 
+# Mapping to qubits by Bravyi-Kitaev for the new form of the hamiltonian
 
-# Mapping to qubits by Bravyi-Kitaev
-
-
-from openfermion.transforms import get_fermion_operator, bravyi_kitaev
-
-h2_qubit_hamiltonian = bravyi_kitaev(get_fermion_operator(h2_molecule.get_molecular_hamiltonian() ))
-
-#h2_qubit_hamiltonian = bravyi_kitaev(get_fermion_operator(h2_molecule_psi4.get_molecular_hamiltonian() ))
+print("\n\nNow let's make a psi_4 integral generation and re-map to qubits:\n")
+h2_qubit_hamiltonian = bravyi_kitaev(get_fermion_operator(h2_molecule_psi4.get_molecular_hamiltonian() ))
 
 print("\nThe latter Hamiltoian mapped to a qubit Hamiltonian in through the Bravyi-kitaev transformation is:\n ")
 print(h2_qubit_hamiltonian)
